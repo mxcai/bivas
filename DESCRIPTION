@@ -1,15 +1,14 @@
 Package: bivas
 Type: Package
-Title: What the Package Does (Title Case)
+Title: bivas (A scalable Bayesian method for bi-level variable selection)
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Mingxuan Cai and Can Yang
+Maintainer: Mingxuan Cai <12250848@life.hkbu.edu.hk>
+Description: This package provides functions for fitting bivas, a scalable Bayesian method for bi-level variable selection
+License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 Imports: Rcpp (>= 0.12.9)
 LinkingTo: Rcpp,RcppArmadillo,BH
 Depends: RcppArmadillo,BH,pROC
-RoxygenNote: 6.0.1
+URL:https://github.com/mxcai/bivas
