@@ -6,7 +6,7 @@ bivas is an efficient statistical approach for bi-level variable selection.
 Installation
 ===========
 
-To install the development version of bvias, it's easiest to use the 'devtools' package. Note that bivas depends on the 'Rcpp' package, which also requires appropriate setting of Rtools and Xcode for Windows and Mac OS/X, respectively.
+To install the development version of bivas, it's easiest to use the 'devtools' package. Note that bivas depends on the 'Rcpp' package, which also requires appropriate setting of Rtools and Xcode for Windows and Mac OS/X, respectively.
 
 ```
 #install.packages("devtools")
