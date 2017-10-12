@@ -116,17 +116,18 @@ RcppExport SEXP outerloop_thread(arma::mat& X, arma::vec& y, arma::mat& Z, const
 
   mat cov(Z.n_cols, ns); // initialize vector for fixed effect estimates
   vec logw(ns); //initialize vector for logweights
-  Rcpp::List Lq_List(ns); //initialize a list for Lq records of each prior setting
+  vec *Lq_list[ns];//initialize an array of pointers for Lq records of each prior setting
 
 
   Bivas BivasObj(X, y, Z, SZX, SZy, xtx, Xm, ym, group, glevel, logodds, sb2, se2, alpha, cov, mu,
-                    alpha_jk, pi_k, pi_p, logw, maxIter, tol, verbose, Lq_List);
+                    alpha_jk, pi_k, pi_p, logw, maxIter, tol, verbose, Lq_list);
 
   // outerloop for all prior settings
 
   //set parallel computation
   const int n_thread = coreNum;
   std::vector<std::thread> threads(n_thread);
+  // std::thread* threads = new (std::nothrow) std::thread[n_thread];
   for(int i_thread = 0; i_thread < n_thread; i_thread++){
     threads[i_thread] = std::thread(&Bivas::update_by_thread, &BivasObj, i_thread);
   }
@@ -134,6 +135,16 @@ RcppExport SEXP outerloop_thread(arma::mat& X, arma::vec& y, arma::mat& Z, const
   for(int i = 0; i < n_thread; i++){
     threads[i].join();
   }
+  // delete[] threads;
+
+  Rcpp::List Lq_List(ns); //initialize a list for Lq records of each prior setting
+  ptr2List(Lq_List, Lq_list);
+
+  // set to nullptr
+  for(int j = 0; j < ns; j++){
+    delete Lq_list[j];
+  }
+
 
   Rcpp::List ret;
   ret["sb2"] = BivasObj.sb2;
@@ -145,7 +156,7 @@ RcppExport SEXP outerloop_thread(arma::mat& X, arma::vec& y, arma::mat& Z, const
   ret["pi_p"] = BivasObj.pi_pMat;
   ret["cov"] = BivasObj.covMat;
   ret["logw"] = BivasObj.logw;
-  ret["Lq_List"] = BivasObj.Lq_List;
+  ret["Lq_List"] = Lq_List;
 
   return ret;
 
@@ -186,11 +197,11 @@ RcppExport SEXP outerloop_mt_thread(Rcpp::List& Xs, Rcpp::List& ys, Rcpp::List& 
 
   cube cov(q+1, l, ns); // initialize ns matrices for fixed effect estimates, each is q*l
   vec logw(ns); //initialize vector for logweights
-  Rcpp::List Lq_List(ns); //initialize a list for Lq records of each prior setting
+  vec *Lq_list[ns];//initialize an array of pointers for Lq records of each prior setting
 
 
   Bivas_mt Bivas_mtObj(pX, py, pZ, pSZX, pSZy, xtx, Xm, ym, logodds, sb2, se2, alpha, cov, mu,
-                 alpha_jk, pi_k, l, nn, K, q, logw, maxIter, tol, verbose, Lq_List);
+                 alpha_jk, pi_k, l, nn, K, q, logw, maxIter, tol, verbose, Lq_list);
 
   // outerloop for all prior settings
 
@@ -205,7 +216,13 @@ RcppExport SEXP outerloop_mt_thread(Rcpp::List& Xs, Rcpp::List& ys, Rcpp::List& 
     threads[i].join();
   }
 
+  Rcpp::List Lq_List(ns); //initialize a list for Lq records of each prior setting
+  ptr2List(Lq_List, Lq_list);
+
   // set to nullptr
+  for(int j = 0; j < ns; j++){
+    delete Lq_list[j];
+  }
   for(int j = 0; j < l; j++){
     delete pX[j];
     delete py[j];
@@ -222,7 +239,7 @@ RcppExport SEXP outerloop_mt_thread(Rcpp::List& Xs, Rcpp::List& ys, Rcpp::List& 
   ret["mu"] = Bivas_mtObj.muMat;
   ret["pi_k"] = Bivas_mtObj.pi_kMat;
   ret["logw"] = Bivas_mtObj.logw;
-  ret["Lq_List"] = Bivas_mtObj.Lq_List;
+  ret["Lq_List"] = Lq_List;
   ret["cov"] = Bivas_mtObj.covMat;
 
   return ret;

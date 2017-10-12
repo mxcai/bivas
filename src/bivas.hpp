@@ -26,7 +26,7 @@ class Bivas{
 public:
   int current_idx=0;
 
-  std::mutex mtx;
+  // std::mutex mtx;
   mat X;
   vec y;
   mat Z;
@@ -54,12 +54,12 @@ public:
   double tol;
   int verbose;
 
-  Rcpp::List Lq_List;
+  vec **Lq_list;
 
   Bivas(const mat& X, const vec& y, const mat& Z, const mat& SZX, const vec& SZy, const vec& xtx,
         mat& Xm, double ym, const vec& group, const vec& glevel, vec logodds, vec& sb2, vec& se2,
         vec& alpha, mat& covMat, mat& muMat, mat& alpha_jkMat, mat& pi_kMat, mat& pi_pMat,
-        vec& logw, uword maxIter, double tol, int verbose, Rcpp::List& Lq_List){
+        vec& logw, uword maxIter, double tol, int verbose, vec *Lq_list[]){
 
     this -> X = X;
     this -> y = y;
@@ -84,7 +84,7 @@ public:
     this -> maxIter = maxIter;
     this -> tol = tol;
     this -> verbose = verbose;
-    this -> Lq_List = Lq_List;
+    this -> Lq_list = Lq_list;
 
   }
 
@@ -129,12 +129,12 @@ public:
   double tol;
   int verbose;
 
-  Rcpp::List Lq_List;
+  vec **Lq_list;
 
   Bivas_mt(mat *pX[], vec *py[], mat *pZ[], mat *pSZX[], vec *pSZy[], const mat& xtx,
         mat& Xm, vec& ym, vec logodds, mat& sb2Mat, mat& se2Mat, vec& alpha, cube &covMat, cube& muMat,
         cube& alpha_jkMat, mat& pi_kMat, uword l, vec nn, uword K, uword q, vec& logw, uword maxIter,
-        double tol, int verbose, Rcpp::List& Lq_List){
+        double tol, int verbose, vec *Lq_list[]){
 
     this -> pX = pX;
     this -> py = py;
@@ -156,7 +156,7 @@ public:
     this -> maxIter = maxIter;
     this -> tol = tol;
     this -> verbose = verbose;
-    this -> Lq_List = Lq_List;
+    this -> Lq_list = Lq_list;
 
     this -> nn = nn;
     this -> l = l;

@@ -16,7 +16,6 @@ void VB_update(const mat& X, const vec& y_bar, const vec& xtx, const vec& group,
                vec& pi_k, vec& pi_p, vec& yt, vec& offDiag, uword n, uword p, uword K){
 
     for(int k = 0; k < K; k++) {
-
         uvec idx = find(group == glevel(k));
         uword n_idx = idx.n_elem;
 
@@ -148,5 +147,13 @@ void extend_pi_p(vec& pi_k, vec& pi_p, uvec idx, uword n_idx, int k) {
         uword j = idx[i];
         pi_p[j] = pi_k[k];
     }
+}
+
+
+void ptr2List(Rcpp::List& Lst, vec *Lst_ptr[]) {
+  int ns = Lst.size();
+  for (int i = 0; i < ns; i++){
+    Lst[i] = *Lst_ptr[i];
+  }
 }
 

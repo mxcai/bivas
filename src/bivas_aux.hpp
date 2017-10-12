@@ -45,6 +45,6 @@ void extend_pi_p(mat& pi_k, mat& pi_p, const vec& group, const vec& glevel, uwor
 
 void extend_pi_p(vec& pi_k, vec& pi_p, uvec idx, uword n_idx, int k);
 
-
+void ptr2List(Rcpp::List& Lst, vec *Lst_ptr[]);
 
 #endif /* bivas_aux_hpp */

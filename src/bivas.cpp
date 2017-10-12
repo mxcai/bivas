@@ -195,22 +195,25 @@ void Bivas::outerloop_by_thread(int i){
   // return the intercept
   cov(0) += ym - dot(Xm,pi_p % alpha_jk % mu);
 
-  Lq_List[i] = Lq;
+  Lq_list[i] = new vec(Lq.begin(),Lq.n_elem,true);
 }
 
+// int current_idx=0;
+std::mutex mtx;
 int Bivas::next(){
-  std::lock_guard<std::mutex> lockGuard(mtx);
+  std::lock_guard<std::mutex> lock(mtx);
   if(current_idx >= logodds.n_elem){
     return -1;
   }
   current_idx++;
+
   return current_idx-1;
 }
 
 void Bivas::update_by_thread(int thread_id){
   while(true){
     int idx = next();
-    // cout << idx << endl;
+
     if(idx == -1){
       break;
     }
@@ -312,7 +315,7 @@ void Bivas_mt::outerloop_by_thread(int i){
   }
 
 
-  Lq_List[i] = Lq;
+  Lq_list[i] = new vec(Lq.begin(),Lq.n_elem,true);
   printf("%d -th outer loop finished \n",i+1);
 }
 
