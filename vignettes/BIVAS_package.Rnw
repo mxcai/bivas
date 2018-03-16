@@ -110,7 +110,7 @@ which returns a list of vectors containing the estimates of: cross-validation me
 
 
 \subsection{Fitting the BIVAS in multi-task learning}\label{bivas_mt}
-For multi-task learning, we use mtExample as demonstration. We set the variables, number of tasks and sample sizes to be $K=1,000$, $l=3$ and $n_1=2,500$, $n_2=3,000$, $n_3=2,500$ respectively.
+For multi-task learning, we use mtExample as demonstration. We set the variables, number of tasks and sample sizes to be $K=500$, $L=3$ and $n_1=500$, $n_2=600$, $n_3=500$ respectively.
 
 <<BIVASmtExample-prelim>>=
 
