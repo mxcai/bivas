@@ -22,7 +22,7 @@ pdfauthor={Mingxuan Cai},
 pdftitle={bivas Vignette}]
 {hyperref}
 
-\title{Quick start for `\texttt{bivas}' Package}
+\title{Quick start guide for `\texttt{bivas}' package}
 \author{Mingxuan Cai$~^1$, Mingwei Dai$~^{2,4}$, Jingsi Ming$~^1$, \\
 Heng Peng$~^1$, Jin Liu$~^3$, and Can Yang$~^4$\\
 \\
