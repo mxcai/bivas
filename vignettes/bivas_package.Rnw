@@ -22,8 +22,7 @@ pdfauthor={Mingxuan Cai},
 pdftitle={bivas Vignette}]
 {hyperref}
 
-\title{`\texttt{bivas}' Package to integrate functional
-annotations with genome-wide association studies}
+\title{Quick start for `\texttt{bivas}' Package}
 \author{Mingxuan Cai$~^1$, Mingwei Dai$~^{2,4}$, Jingsi Ming$~^1$, \\
 Heng Peng$~^1$, Jin Liu$~^3$, and Can Yang$~^4$\\
 \\

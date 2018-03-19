@@ -22,8 +22,7 @@ pdfauthor={Mingxuan Cai},
 pdftitle={bivas Vignette}]
 {hyperref}
 
-\title{`\texttt{bivas}' Package to integrate functional
-annotations with genome-wide association studies}
+\title{Quick start for `\texttt{bivas}' Package}
 \author{Mingxuan Cai$~^1$, Mingwei Dai$~^{2,4}$, Jingsi Ming$~^1$, \\
 Heng Peng$~^1$, Jin Liu$~^3$, and Can Yang$~^4$\\
 \\
@@ -147,9 +146,9 @@ R> str(perf_bivas)
 \end{Sinput}
 \begin{Soutput}
 List of 3
- $ cvm    : num 3.56
- $ cvsd   : num 0.553
- $ testErr: num [1:10] 3.01 3.74 4.73 3.97 3.41 ...
+ $ cvm    : num 3.58
+ $ cvsd   : num 0.877
+ $ testErr: num [1:10] 3.33 3.46 4 3.72 4.11 ...
 \end{Soutput}
 \end{Schunk}
 which returns a list of vectors containing the estimates of: cross-validation mean squared error, standard error of mse and the test error for each trial. By default we use 10 fold cross-validation (`\texttt{nfolds=10}').
@@ -235,9 +234,9 @@ R> str(perf_bivas)
 \end{Sinput}
 \begin{Soutput}
 List of 3
- $ cvm    : num 3.56
- $ cvsd   : num 0.553
- $ testErr: num [1:10] 3.01 3.74 4.73 3.97 3.41 ...
+ $ cvm    : num 3.58
+ $ cvsd   : num 0.877
+ $ testErr: num [1:10] 3.33 3.46 4 3.72 4.11 ...
 \end{Soutput}
 \end{Schunk}
 which returns a list of vectors containing the estimates of: cross-validation mean squared error, standard error of mse and the test error for each trial. By default we use 10 fold cross-validation (`\texttt{nfolds=10}').
