@@ -156,7 +156,7 @@ str(pos_bivas)
 pos_bivas_mt <- getPos(fit_bivas_mt,weight=T)
 str(pos_bivas_mt)
 @
-which returns a list of values between 0 and 1 indicating the posterior inclusion probabilities of groups and variables. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in K by l matrix.
+which returns a list of values between 0 and 1 indicating the posterior inclusion probabilities of groups and variables. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
 
 To obtain the coefficient estimates, use
 <<BIVAS-coef,eval=TRUE>>=
@@ -165,7 +165,7 @@ str(coef_bivas)
 coef_bivas_mt <- coef(fit_bivas_mt,weight=T)
 str(coef_bivas_mt)
 @
-which returns a list of vectors containing the estimates of fixed effects and random effects. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in K by l matrix.
+which returns a list of vectors containing the estimates of fixed effects and random effects. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
 
 To obtain the fdr, apply generic function `\texttt{fdr}' to a fitted `\texttt{bivas}' object:
 <<BIVAS-fdr,eval=TRUE>>=
@@ -174,7 +174,7 @@ str(fdr_bivas)
 fdr_bivas_mt <- fdr(fit_bivas_mt,FDRset=0.05,control="global")
 str(fdr_bivas_mt)
 @
-which returns a list of binary values indicating the relevant groups and variables. One can specify threshold in FDR control through the argument `\texttt{FDRset}' which is 0.05 in our case; and we allow both local (`\texttt{control="local"}') and global (`\texttt{control="global"}') FDR controls. For multi-task BIVAS, the variable level results are stored in K by l matrix.
+which returns a list of binary values indicating the relevant groups and variables. One can specify threshold in FDR control through the argument `\texttt{FDRset}' which is 0.05 in our case; and we allow both local (`\texttt{control="local"}') and global (`\texttt{control="global"}') FDR controls. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
 
 To predict with new data based on fitted model, use
 <<BIVAS-predict,eval=TRUE>>=

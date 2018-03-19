@@ -146,9 +146,9 @@ R> str(perf_bivas)
 \end{Sinput}
 \begin{Soutput}
 List of 3
- $ cvm    : num 3.58
- $ cvsd   : num 0.877
- $ testErr: num [1:10] 3.33 3.46 4 3.72 4.11 ...
+ $ cvm    : num 3.62
+ $ cvsd   : num 0.515
+ $ testErr: num [1:10] 4.13 3.78 3.47 3.29 3.28 ...
 \end{Soutput}
 \end{Schunk}
 which returns a list of vectors containing the estimates of: cross-validation mean squared error, standard error of mse and the test error for each trial. By default we use 10 fold cross-validation (`\texttt{nfolds=10}').
@@ -234,9 +234,9 @@ R> str(perf_bivas)
 \end{Sinput}
 \begin{Soutput}
 List of 3
- $ cvm    : num 3.58
- $ cvsd   : num 0.877
- $ testErr: num [1:10] 3.33 3.46 4 3.72 4.11 ...
+ $ cvm    : num 3.62
+ $ cvsd   : num 0.515
+ $ testErr: num [1:10] 4.13 3.78 3.47 3.29 3.28 ...
 \end{Soutput}
 \end{Schunk}
 which returns a list of vectors containing the estimates of: cross-validation mean squared error, standard error of mse and the test error for each trial. By default we use 10 fold cross-validation (`\texttt{nfolds=10}').
@@ -270,7 +270,7 @@ List of 2
  $ group_pos: num [1:500, 1] 0.937 0.912 0.901 0.903 0.901 ...
 \end{Soutput}
 \end{Schunk}
-which returns a list of values between 0 and 1 indicating the posterior inclusion probabilities of groups and variables. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in K by l matrix.
+which returns a list of values between 0 and 1 indicating the posterior inclusion probabilities of groups and variables. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
 
 To obtain the coefficient estimates, use
 \begin{Schunk}
@@ -299,7 +299,7 @@ List of 2
  $ beta: num [1:500, 1:3] 0.000394 0.001997 -0.000347 -0.001942 0.001002 ...
 \end{Soutput}
 \end{Schunk}
-which returns a list of vectors containing the estimates of fixed effects and random effects. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in K by l matrix.
+which returns a list of vectors containing the estimates of fixed effects and random effects. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
 
 To obtain the fdr, apply generic function `\texttt{fdr}' to a fitted `\texttt{bivas}' object:
 \begin{Schunk}
@@ -323,7 +323,7 @@ List of 2
  $ groupFDR: num [1:500] 1 1 0 0 0 0 0 0 0 1 ...
 \end{Soutput}
 \end{Schunk}
-which returns a list of binary values indicating the relevant groups and variables. One can specify threshold in FDR control through the argument `\texttt{FDRset}' which is 0.05 in our case; and we allow both local (`\texttt{control="local"}') and global (`\texttt{control="global"}') FDR controls. For multi-task BIVAS, the variable level results are stored in K by l matrix.
+which returns a list of binary values indicating the relevant groups and variables. One can specify threshold in FDR control through the argument `\texttt{FDRset}' which is 0.05 in our case; and we allow both local (`\texttt{control="local"}') and global (`\texttt{control="global"}') FDR controls. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
 
 To predict with new data based on fitted model, use
 \begin{Schunk}
