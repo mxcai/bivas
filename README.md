@@ -16,7 +16,7 @@ install_github("mxcai/bivas")
 
 Usage
 ===========
-[The 'bivas' vignette](https://github.com/mxcai/bivas/blob/master/vignettes/bivas_package.pdf) provides a quick start for the usage of the package. The following help page also provides quick reference and examples:
+[The 'bivas' vignette](https://github.com/mxcai/bivas/blob/master/vignettes/bivas_package.pdf?raw=true) provides a quick start for the usage of the package. The following help page also provides quick reference and examples:
 
 ```
 library(bivas)
