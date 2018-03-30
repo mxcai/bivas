@@ -23,10 +23,15 @@ library(bivas)
 package?bivas
 ```
 
+Reproducibility
+==========
+
+All the simulation results can be reproduced by using the code at [sim-bivas](https://github.com/mxcai/sim-bivas).
+
 References
 ==========
 
-Mingxuan Cai, Mingwei Dai, Jingsi Ming, Heng Peng, Jin Liu and Can Yang. BIVAS: A scalable Bayesian method for bi-level variable selection. 2017. Under review.
+Mingxuan Cai, Mingwei Dai, Jingsi Ming, Heng Peng, Jin Liu and Can Yang. BIVAS: A scalable Bayesian method for bi-level variable selection. Arxive link: http://arxiv.org/abs/1803.10439.
 
 
 Development
