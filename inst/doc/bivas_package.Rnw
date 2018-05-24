@@ -1,0 +1,197 @@
+% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+\documentclass[11pt]{article}
+%% Set my margins
+\setlength{\oddsidemargin}{0.0truein}
+\setlength{\evensidemargin}{0.0truein}
+\setlength{\textwidth}{6.5truein}
+\setlength{\topmargin}{0.0truein}
+\setlength{\textheight}{9.0truein}
+\setlength{\headsep}{0.0truein}
+\setlength{\headheight}{0.0truein}
+\setlength{\topskip}{0pt}
+%% End of margins
+
+% \usepackage{subfigure}
+
+%%\pagestyle{myheadings}
+%%\markboth{$Date$\hfil$Revision$}{\thepage}
+\usepackage[pdftex,
+bookmarks,
+bookmarksopen,
+pdfauthor={Mingxuan Cai},
+pdftitle={bivas Vignette}]
+{hyperref}
+
+\title{Quick start guide for `\texttt{bivas}' package}
+\author{Mingxuan Cai$~^1$, Mingwei Dai$~^{2,4}$, Jingsi Ming$~^1$, \\
+Heng Peng$~^1$, Jin Liu$~^3$, and Can Yang$~^4$\\
+\\
+$~^1$ Department of Mathematics, Hong Kong Baptist University, Hong Kong.\\
+$~^2$ School of Mathematics and Statistics, Xi'an Jiaotong University, Xi'an, China.\\
+$~^3$ Centre of Quantitative Medicine, Duke-NUS Graduate Medical School, Singapore.\\
+$~^4$ Department of Mathematics, The Hong Kong University of Science and Technology,\\
+Hong Kong.\\
+}
+
+\date{\today}
+
+\SweaveOpts{engine=R, echo=TRUE, pdf=TRUE}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+
+\section{Overview}
+
+This vignette provides an introduction to the `\texttt{bivas}' package.
+R package `\texttt{bivas}' implements BIVAS model,
+which is an efficient statistical approach for bi-level variable selection. It provides model parameter estimation as well as statistical inference.
+
+The package can be loaded with the command:
+
+<<preliminaries,echo=FALSE,results=hide>>=
+options(prompt = "R> ")
+@
+
+<<BVIAS-prelim>>=
+library("bivas")
+@
+
+This vignette is organized as follows.
+Section \ref{bivas} discusses how to fit BIVAS in linear regression with group structure.
+Section \ref{bivas_mt} discusses how to fit BIVAS in multi-task learning.
+Section \ref{inference} explains command lines for statistical inference for identification of associated variables and groups using BIVAS.
+
+
+Please feel free to contact Can Yang at \texttt{macyang@ust.hk} for any questions or suggestions regarding the `\texttt{bivas}' package.
+
+\section{Workflow}\label{workflow}
+
+R package \texttt{bivas} provides fitting function for both linear regression with group structure and multi-task learning;
+it is also designed with an option to execute prarallel computing. In this vignette, we use the simulated groupExample and mtExample in the package.
+
+\subsection{Fitting the BIVAS in linear regression with group structure}\label{bivas}
+
+In this section, we use groupExample data as demonstration. We set the number of groups, variables and sample size to be $K=100$, $p=1,000$ and $n=500$ respectively.
+
+<<BIVASExample-prelim>>=
+
+data(groupExample)
+group <- groupExample$group
+X <- groupExample$X
+y <- groupExample$y
+length(group)
+length(unique(group))
+dim(X)
+length(y)
+@
+
+The data to be used are `\texttt{X}', `\texttt{y}' and `\texttt{group}'. `\texttt{X}' and `\texttt{y}' are typical design matrix and response vector for linear regression; `\texttt{group}' is a vector containing the group membership of each variable. The length of `\texttt{group}' is assumed to be the same as the number of columns of matrix provided to `\texttt{X}', indicating which group each variable belongs to.
+
+Now we can fit BIVAS with the function:
+<<BIVAS-fit,eval=FALSE>>=
+fit_bivas <- bivas(y = y, X = X,group = group)
+@
+if the computation should be parallelized with 2 threads, we can provide the number of threads in an additional argument as follows:
+<<BIVAS-para,eval=TRUE,results=hide>>=
+fit_bivas <- bivas(y = y, X = X, group = group, coreNum = 2)
+@
+with this, the computation tasks are dynamically allocated to 2 threads in the fitting process.
+
+The returned object is `\texttt{fit\_bivas}' of S3 class containing parameter estimation, posterior inclusion probability, posterior mean and evidence lower bound for each EM procedure. Statistical inference can be made using the command in \ref{inference}.
+
+To evaluate the model perfomance, use
+<<BIVAS-perf,eval=TRUE>>=
+perf_bivas <- perf.bivas(y = y, X = X, group = group, coreNum = 2, nfolds=10)
+str(perf_bivas)
+@
+which returns a list of vectors containing the estimates of: cross-validation mean squared error, standard error of mse and the test error for each trial. By default we use 10 fold cross-validation (`\texttt{nfolds=10}').
+
+
+\subsection{Fitting the BIVAS in multi-task learning}\label{bivas_mt}
+For multi-task learning, we use mtExample as demonstration. We set the variables, number of tasks and sample sizes to be $K=500$, $L=3$ and $n_1=500$, $n_2=600$, $n_3=500$ respectively.
+
+<<BIVASmtExample-prelim>>=
+
+data(mtExample)
+X <- mtExample$X
+y <- mtExample$y
+class(X)
+class(y)
+sapply(X,ncol)
+length(X)
+sapply(y,length)
+@
+where the data to be used are are stored in the lists `\texttt{X}' and `\texttt{y}'. The length of `\texttt{X}' is assumed to be the same as the length of `\texttt{y}'.
+
+To fit the model, the function `\texttt{bivas\_mt}' is used:
+<<BIVASmt-fit,eval=FALSE>>=
+fit_bivas_mt <- bivas_mt(y = y, X = X)
+@
+
+Again, parallel computing can be called by the following:
+<<BIVASmt-para,eval=TRUE,results=hide>>=
+fit_bivas_mt <- bivas_mt(y = y, X = X, coreNum = 2)
+@
+
+`\texttt{fit\_bivas\_mt}' is an S3 object containing parameter estimation, posterior inclusion probability, posterior mean and evidence lower bound for each EM procedure.
+
+
+To evaluate the model perfomance, use
+<<BIVASmt-perf,eval=TRUE>>=
+perf_bivas_mt <- perf.bivas_mt(y = y, X = X, coreNum = 2, nfolds=10)
+str(perf_bivas)
+@
+which returns a list of vectors containing the estimates of: cross-validation mean squared error, standard error of mse and the test error for each trial. By default we use 10 fold cross-validation (`\texttt{nfolds=10}').
+
+
+\subsection{Statistical inference, variable selection and prediction}\label{inference}
+
+In this section we show how to make statistical inference based on the fitted `\texttt{bivas}' object.
+
+To obtain the posterior inclusion probability of groups and variables, use
+<<BIVAS-pos,eval=TRUE>>=
+pos_bivas <- getPos(fit_bivas,weight=T)
+str(pos_bivas)
+pos_bivas_mt <- getPos(fit_bivas_mt,weight=T)
+str(pos_bivas_mt)
+@
+which returns a list of values between 0 and 1 indicating the posterior inclusion probabilities of groups and variables. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
+
+To obtain the coefficient estimates, use
+<<BIVAS-coef,eval=TRUE>>=
+coef_bivas <- coef(fit_bivas,weight=T)
+str(coef_bivas)
+coef_bivas_mt <- coef(fit_bivas_mt,weight=T)
+str(coef_bivas_mt)
+@
+which returns a list of vectors containing the estimates of fixed effects and random effects. If `\texttt{weight=F}', the outcomes of all EM procedures will be returned unweighted by the lower bound. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
+
+To obtain the fdr, apply generic function `\texttt{fdr}' to a fitted `\texttt{bivas}' object:
+<<BIVAS-fdr,eval=TRUE>>=
+fdr_bivas <- fdr(fit_bivas,FDRset=0.05,control="global")
+str(fdr_bivas)
+fdr_bivas_mt <- fdr(fit_bivas_mt,FDRset=0.05,control="global")
+str(fdr_bivas_mt)
+@
+which returns a list of binary values indicating the relevant groups and variables. One can specify threshold in FDR control through the argument `\texttt{FDRset}' which is 0.05 in our case; and we allow both local (`\texttt{control="local"}') and global (`\texttt{control="global"}') FDR controls. For multi-task BIVAS, the variable level results are stored in a K by L matrix.
+
+To predict with new data based on fitted model, use
+<<BIVAS-predict,eval=TRUE>>=
+y_hat <- predict(fit_bivas, X=groupExample$X)
+str(y_hat)
+y_hat <- predict(fit_bivas_mt, X=mtExample$X)
+str(y_hat)
+@
+which returns a vector of predicted values for group BIVAS or a list of predicted values for each task for multi-task BIVAS.
+
+
+
+
+\begin{thebibliography}{99}
+Mingxuan Cai, Mingwei Dai, Jingsi Ming, Heng Peng, Jin Liu and Can Yang. BIVAS: A scalable Bayesian method for bi-level variable selection with applications. 2017. Under review.
+
+
+\end{thebibliography}
+
+\end{document}
