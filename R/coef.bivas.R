@@ -10,7 +10,7 @@ coef.bivas <- function(object, weight=T){
   }
 
   rownames(coef$beta) <- object$varname
-  rownames(coef$cov)  <- c("Intercept",object$covname)
+  rownames(coef$cov)  <- object$covname
 
   return(coef)
 }
@@ -26,7 +26,7 @@ coef.bivas_mt <- function(object, weight=T){
   }
 
   rownames(coef$beta) <- object$varname
-  rownames(coef$cov)  <- c("Intercept",object$covname)
+  rownames(coef$cov)  <- object$covname
 
   return(coef)
 }
