@@ -183,11 +183,10 @@ bivas <- function (y,X,Z=NULL,group,maxIter=1500,tol=1e-6,sb2,se2,alpha,logodds=
   glevel <- levels(group)
   K <- length(glevel)
 
-  if (!is.null(colnames(X))) {
+  if (is.null(colnames(X))) {
+    varname <- paste("V",1:p,sep="")
+  } else {
     varname <- colnames(X)
-  }
-  if (!is.null(colnames(Z))) {
-    covname <- colnames(Z)
   }
 
   # Initialization of model parameters
@@ -273,9 +272,16 @@ bivas <- function (y,X,Z=NULL,group,maxIter=1500,tol=1e-6,sb2,se2,alpha,logodds=
   if(is.null(Z)){
     q <- 0
     Z <- matrix(1,n,1)
+    covname <- "Intercept"
   }else{
     q <- ncol(Z)
     Z <- cbind(1,Z)
+    if (is.null(colnames(Z))) {
+      covname <- c("Intercept",paste("C",1:q,sep=""))
+    } else {
+      covname <- c("Intercept",colnames(Z))
+    }
+
   }
 
   # report settings
@@ -330,12 +336,8 @@ bivas <- function (y,X,Z=NULL,group,maxIter=1500,tol=1e-6,sb2,se2,alpha,logodds=
   # fit$Z       <- Z
   fit$group   <- group
 
-  if (!is.null(colnames(X))) {
-    fit$varname <- varname
-  }
-  if (!is.null(colnames(Z))) {
-    fit$covname <- covname
-  }
+  fit$varname <- varname
+  fit$covname <- covname
   fit$groupname <- glevel
 
   attr(fit,"class") <- "bivas"
@@ -378,12 +380,12 @@ bivas_mt <- function (y,X,Z=NULL,maxIter=1500,tol=1e-6,sb2,se2,alpha,logodds=NUL
   l <- length(y)
 
 
-  if (!is.null(colnames(X[[1]]))) {
-    varname <- colnames(X[[1]])
+  if (is.null(colnames(X[[1]]))) {
+    varname <- paste("V",1:K,sep="")
+  } else {
+    varname <- colnames(X)
   }
-  if (!is.null(colnames(Z[[1]]))) {
-    covname <- colnames(Z[[1]])
-  }
+
 
   # Initialization of model parameters
   if (missing(alpha))   {alpha <- 1/log(K*l+1)}
@@ -465,6 +467,7 @@ bivas_mt <- function (y,X,Z=NULL,maxIter=1500,tol=1e-6,sb2,se2,alpha,logodds=NUL
     for(j in 1:l){
       Z[[j]] <- matrix(1,nn[j],1)
     }
+    covname <- "Intercept"
   }else{
     q <- sapply(Z,ncol)
     if(any(q[1]!=q)){
@@ -473,6 +476,7 @@ bivas_mt <- function (y,X,Z=NULL,maxIter=1500,tol=1e-6,sb2,se2,alpha,logodds=NUL
       q <- q[1]
     }
     Z <- lapply(Z,function(x) cbind(1,x))
+    covname <- c("Intercept",paste("C",1:q,sep=""))
   }
 
   y <- lapply(y,as.matrix)
@@ -528,12 +532,8 @@ bivas_mt <- function (y,X,Z=NULL,maxIter=1500,tol=1e-6,sb2,se2,alpha,logodds=NUL
   # fit$y       <- y
   # fit$Z       <- Z
 
-  if (!is.null(colnames(X[[1]]))) {
-    fit$varname <- varname
-  }
-  if (!is.null(colnames(Z[[1]]))) {
-    fit$covname <- covname
-  }
+  fit$varname <- varname
+  fit$covname <- covname
 
   attr(fit,"class") <- "bivas_mt"
   return(fit)
