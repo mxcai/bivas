@@ -396,8 +396,7 @@ bivas_mt <- function (y,X,Z=NULL,maxIter=1500,tol=1e-6,sb2,se2,alpha,logodds=NUL
 
   if (is.null(logodds)) {
     if(length(alpha) == 1 & length(se2) == l & length(sb2) == l) {
-      log10odds <- seq(-log10(K),log10(K),length.out = 20)
-      logodds <- log(10^(log10odds))
+      logodds <- seq(-log10(K),log10(K),length.out = 20)
     } else {
       stop("logodds can only be missing when length(alpha) = 1, length(se2) = length(sb2) = #task")
     }
