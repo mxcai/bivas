@@ -64,10 +64,10 @@ RcppExport SEXP read_data(Rcpp::String stringname) {
     famfile += ".fam";
     String bimfile = stringname;
     bimfile += ".bim";
-    int N =  getLineNum(famfile);
-    int P =  getLineNum(bimfile);
-
+    long long N =  getLineNum(famfile);
+    long long P =  getLineNum(bimfile);
     int* X = new int[N*P];
+    
     readPlink(stringname,N, P, X);
     arma::Mat<int> X1(X,N,P,false);
     double* y = new double[N];

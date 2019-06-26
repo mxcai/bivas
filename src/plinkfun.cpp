@@ -56,12 +56,16 @@ void readPlink(string stringname,int N, int P, int* X){
     }
 
     unsigned long mode =  mode0.to_ulong();
+    if(mode == 0){
+      printf ("individual-Major Order:improper type of plink file");
+      exit (EXIT_FAILURE);
+    }
 
-    int n = 0;
-    long charNum = ceil(N*1.0/4)*10000;
-    int leftGenoNum = ceil(N*1.0/4)*P;
-    int nblock = ceil(N*1.0/4);
-    int nSNP = 0;
+    long n = 0;
+    long long charNum = ceil(N*1.0/4)*10000;
+    long long leftGenoNum = ceil(N*1.0/4)*P;
+    long nblock = ceil(N*1.0/4);
+    long nSNP = 0;
     while (!feof(fp)) {
         if(leftGenoNum <= 0)
             break;
@@ -71,25 +75,30 @@ void readPlink(string stringname,int N, int P, int* X){
         char* genotype = new char[charNum];
         fread(genotype, sizeof(char), charNum, fp);
         int* geno = new int[4];
-        int nSNPc = int(charNum / nblock); //number of SNPs of this iteration
-        int idx = 0;
-        for (int i=0; i < nSNPc; i++) {
-            for(int j=0; j < nblock - 1; j++){
+        long nSNPc = long(charNum / nblock); //number of SNPs of this iteration
+        long long idx = 0;
+        for (long i=0; i < nSNPc; i++) {
+            for(long j=0; j < nblock - 1; j++){
+                long long indx = (long long)(nSNP) * (long long)(N) + (long long)(j*4);
                 std::bitset<8> bits(genotype[idx]);
                 getFourGentype(geno,bits);
-                memcpy(X + nSNP * N + j*4, geno, 4*sizeof(int));
+                memcpy(X + indx, geno, 4*sizeof(int));
                 idx++;
                 leftGenoNum -= 1;
             }
-            int left = N - (nblock - 1)*4;
+            long left = N - (nblock - 1)*4;
             std::bitset<8> bits(genotype[idx]);
             getFourGentype(geno,bits);
-            memcpy(X + nSNP * N + (nblock - 1)*4, geno, left*sizeof(int));
+            
+            long long indx2 = (long long)(nSNP) * (long long)(N) + (long long)(nblock - 1)*4;
+            long long indx3 = left*sizeof(int);
+            memcpy(X + indx2, geno, indx3);
             idx++;
             leftGenoNum -= 1;
             nSNP ++;
         }
         delete[] geno;
+        delete[] genotype;
         n++;
     }
 
