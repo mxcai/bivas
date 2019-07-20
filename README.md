@@ -31,7 +31,7 @@ All the simulation results can be reproduced by using the code at [sim-bivas](ht
 References
 ==========
 
-Mingxuan Cai, Mingwei Dai, Jingsi Ming, Heng Peng, Jin Liu and Can Yang. BIVAS: A scalable Bayesian method for bi-level variable selection. Under review. arXiv link: http://arxiv.org/abs/1803.10439.
+Mingxuan Cai, Mingwei Dai, Jingsi Ming, Heng Peng, Jin Liu and Can Yang. BIVAS: A scalable Bayesian method for bi-level variable selection. Under review. JCGS: https://www.tandfonline.com/doi/full/10.1080/10618600.2019.1624365.
 
 
 Development
